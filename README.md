@@ -1,5 +1,8 @@
 # Sidekiq::Lock
 
+[![Code Climate](https://codeclimate.com/github/emq/sidekiq-lock.png)](https://codeclimate.com/github/emq/sidekiq-lock)
+[![Build Status](https://travis-ci.org/emq/sidekiq-lock.png?branch=master)](https://travis-ci.org/emq/sidekiq-lock)
+
 Redis-based simple locking mechanism for [sidekiq][2]. Uses [SET command][1] introduced in Redis 2.6.16.
 
 It can be handy if you push a lot of jobs into the queue(s), but you don't want to execute specific jobs at the same time - it provides a `lock` method that you can use in whatever way you want.
@@ -12,11 +15,15 @@ This gem requires at least:
 
 Add this line to your application's Gemfile:
 
-    gem 'sidekiq-lock', git: "git@github.com:emq/sidekiq-lock.git" # no stable release yet
+``` ruby
+gem 'sidekiq-lock', git: "git@github.com:emq/sidekiq-lock.git" # no stable release yet :(
+```
 
 And then execute:
 
-    $ bundle
+``` bash
+$ bundle
+```
 
 ## Usage
 
@@ -71,7 +78,7 @@ class Worker
   def perform(user_id, timeout)
     # ...
     # do some work
-    # only at this point I want' to try to acquire the lock
+    # only at this point I want to acquire the lock
     if lock.acquire!
       # I can do the work
     else
