@@ -16,14 +16,3 @@ def redis(command, *args)
     c.send(command, *args)
   end
 end
-
-class LockWorker
-  include Sidekiq::Worker
-  include Sidekiq::Lock::Worker
-  sidekiq_options lock: { timeout: 1, name: 'lock-worker' }
-end
-
-class RegularWorker
-  include Sidekiq::Worker
-  include Sidekiq::Lock::Worker
-end

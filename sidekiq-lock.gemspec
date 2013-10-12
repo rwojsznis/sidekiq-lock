@@ -8,9 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Sidekiq::Lock::VERSION
   spec.authors       = ["Rafal Wojsznis"]
   spec.email         = ["rafal.wojsznis@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = spec.summary = "Simple redis-based lock mechanism for your sidekiq workers"
+  spec.homepage      = "https://github.com/emq/sidekiq-lock"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

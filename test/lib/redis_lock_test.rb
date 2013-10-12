@@ -8,7 +8,7 @@ module Sidekiq
         Sidekiq.redis { |c| c.flushdb }
       end
 
-      let(:args) { [{'timeout' => 1, 'name' => 'test-lock'}, []] }
+      let(:args) { [{'timeout' => 100, 'name' => 'test-lock'}, []] }
 
       it "raises an error on missing timeout&name values" do
         assert_raises ArgumentError do
@@ -69,7 +69,7 @@ module Sidekiq
         lock.acquire!
         lock_value = redis("get", "test-lock")
         assert lock_value
-        sleep 1.1 # timeout lock
+        sleep 0.11 # timeout lock
 
         new_lock = RedisLock.new(*args)
         new_lock.acquire!

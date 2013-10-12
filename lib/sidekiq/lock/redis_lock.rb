@@ -21,7 +21,7 @@ module Sidekiq
       # this also requires redis-rb >= 3.0.5
       def acquire!
         @acquired ||= Sidekiq.redis do |r|
-          r.set(name, value, { nx: true, ex: timeout })
+          r.set(name, value, { nx: true, px: timeout })
         end
       end
 
