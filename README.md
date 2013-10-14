@@ -16,7 +16,7 @@ This gem requires at least:
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'sidekiq-lock', git: "git@github.com:emq/sidekiq-lock.git" # no stable release yet :(
+gem 'sidekiq-lock'
 ```
 
 And then execute:
