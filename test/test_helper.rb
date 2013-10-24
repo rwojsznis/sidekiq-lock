@@ -6,6 +6,7 @@ require "minitest/pride"
 
 require "sidekiq"
 require "sidekiq-lock"
+require "test_workers"
 
 Sidekiq.logger.level = Logger::ERROR
 

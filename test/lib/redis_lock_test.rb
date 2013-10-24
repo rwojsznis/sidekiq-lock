@@ -32,6 +32,11 @@ module Sidekiq
         assert RedisLock.new({ 'timeout' => 500, 'name' => 'lock-name' }, [])
       end
 
+      it "is released by default" do
+        lock = RedisLock.new({ 'timeout' => 500, 'name' => 'lock-name' }, [])
+        refute lock.acquired?
+      end
+
       it "can accept block as arguments" do
         lock = RedisLock.new({
             'timeout' => proc { |options| options['timeout'] * 2 },
