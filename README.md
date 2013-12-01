@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/emq/sidekiq-lock.png?branch=master)](https://travis-ci.org/emq/sidekiq-lock)
 [![Coverage Status](https://coveralls.io/repos/emq/sidekiq-lock/badge.png)](https://coveralls.io/r/emq/sidekiq-lock)
 [![Dependency Status](https://gemnasium.com/emq/sidekiq-lock.png)](https://gemnasium.com/emq/sidekiq-lock)
+[![Gem Version](https://badge.fury.io/rb/sidekiq-lock.png)](http://badge.fury.io/rb/sidekiq-lock)
 
 Redis-based simple locking mechanism for [sidekiq][2]. Uses [SET command][1] introduced in Redis 2.6.16.
 
