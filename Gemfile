@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
-
-# Specify your gem's dependencies in sidekiq-lock.gemspec
 gemspec
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0' # if using anything in the ruby standard library
+end
