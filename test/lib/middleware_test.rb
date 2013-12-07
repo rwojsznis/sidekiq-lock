@@ -11,7 +11,7 @@ module Sidekiq
       before do
         Sidekiq.redis = REDIS
         Sidekiq.redis { |c| c.flushdb }
-        Thread.current[Sidekiq::Lock::THREAD_KEY] = nil
+        clear_lock_variable
       end
 
       let(:handler){ Sidekiq::Lock::Middleware.new }

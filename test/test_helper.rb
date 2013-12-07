@@ -20,3 +20,7 @@ def redis(command, *args)
     c.send(command, *args)
   end
 end
+
+def clear_lock_variable
+  Thread.current[Sidekiq::Lock::THREAD_KEY] = nil
+end
