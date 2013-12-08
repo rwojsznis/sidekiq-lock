@@ -4,14 +4,10 @@ module Sidekiq
   module Lock
     describe Middleware do
 
-      def thread_variable
-        Thread.current[Sidekiq::Lock::THREAD_KEY]
-      end
-
       before do
         Sidekiq.redis = REDIS
         Sidekiq.redis { |c| c.flushdb }
-        clear_lock_variable
+        set_lock_variable!
       end
 
       let(:handler){ Sidekiq::Lock::Middleware.new }
@@ -21,7 +17,7 @@ module Sidekiq
           true
         end
 
-        assert_kind_of RedisLock, thread_variable
+        assert_kind_of RedisLock, lock_thread_variable
       end
 
       it 'sets lock variable with provided dynamic options' do
@@ -29,8 +25,8 @@ module Sidekiq
           true
         end
 
-        assert_equal "lock:1234", thread_variable.name
-        assert_equal 2000,   thread_variable.timeout
+        assert_equal "lock:1234", lock_thread_variable.name
+        assert_equal 2000,   lock_thread_variable.timeout
       end
 
       it 'sets nothing for workers without lock options' do
@@ -38,7 +34,7 @@ module Sidekiq
           true
         end
 
-        assert_nil thread_variable
+        assert_nil lock_thread_variable
       end
 
     end

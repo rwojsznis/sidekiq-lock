@@ -6,6 +6,7 @@ Encoding.default_internal = Encoding::UTF_8
 
 require "minitest/autorun"
 require "minitest/pride"
+require "mocha/setup"
 
 require "sidekiq"
 require "sidekiq-lock"
@@ -21,6 +22,10 @@ def redis(command, *args)
   end
 end
 
-def clear_lock_variable
-  Thread.current[Sidekiq::Lock::THREAD_KEY] = nil
+def set_lock_variable!(value = nil)
+  Thread.current[Sidekiq::Lock::THREAD_KEY] = value
+end
+
+def lock_thread_variable
+  Thread.current[Sidekiq::Lock::THREAD_KEY]
 end

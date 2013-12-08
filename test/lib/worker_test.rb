@@ -4,10 +4,10 @@ module Sidekiq
   module Lock
     describe Worker do
 
-      after { clear_lock_variable }
+      after { set_lock_variable! }
 
       it 'sets lock method that points to thread variable' do
-        Thread.current[Sidekiq::Lock::THREAD_KEY] = "test"
+        set_lock_variable! "test"
         assert_equal "test", LockWorker.new.lock
       end
 
@@ -19,7 +19,7 @@ module Sidekiq
           include Sidekiq::Lock::Worker
         end
 
-        Thread.current[Sidekiq::Lock::THREAD_KEY] = "custom_name"
+        set_lock_variable! "custom_name"
 
         assert_equal "custom_name", WorkerWithCustomLockName.new.custom_lock_name
       end
