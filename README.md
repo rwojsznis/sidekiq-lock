@@ -93,6 +93,23 @@ end
 
 Just be sure to provide valid redis key as a lock name.
 
+### Customizing lock method name
+
+You can change `lock` to something else (globally) in sidekiq server configuration:
+
+``` ruby
+Sidekiq.configure_server do |config|
+  config.lock_method = :redis_lock
+end
+```
+
+### Inline testing
+
+As you know middleware is not invoked when testing jobs inline, you can require in your test/spec helper file `sidekiq/lock/testing/inline` to include two methods that will help you setting / clearing up lock manually:
+
+- `set_sidekiq_lock(worker_class, payload)` - note: payload should be an array of worker arguments
+- `clear_sidekiq_lock`
+
 ## Contributing
 
 1. Fork it

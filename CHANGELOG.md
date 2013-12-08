@@ -1,4 +1,4 @@
-## 0.2.0 (in progress)
+## 0.2.0
 
 - ability to globally configure `lock` method name
 
@@ -12,7 +12,7 @@ end
   you will have access to two methods:
 
   - `set_sidekiq_lock(worker_class, payload)`
-  
+
   - `clear_sidekiq_lock`
 
   That will setup `RedisLock` under proper thread variable.
