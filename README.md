@@ -87,6 +87,11 @@ class Worker
     else
       # reschedule, raise an error or do whatever you want
     end
+
+    # ...
+
+    ensure
+      lock.release! # you probably want to manually release lock after work is done
   end
 end
 ```
