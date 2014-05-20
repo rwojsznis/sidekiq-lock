@@ -58,7 +58,7 @@ So now in your worker class you can call (whenever you need):
 
 - `lock.acquire!` - will try to acquire the lock, if returns false on failure (that means some other process / thread took the lock first)
 - `lock.acquired?` - set to `true` when lock is successfully acquired
-- `lock.release!` - deletes the lock (if not already expired / taken by another process)
+- `lock.release!` - deletes the lock (only if it's: acquired by current thread and not already expired)
 
 ### Lock options
 
@@ -83,15 +83,18 @@ class Worker
     # do some work
     # only at this point I want to acquire the lock
     if lock.acquire!
-      # I can do the work
+      begin
+        # I can do the work
+        # ...
+        ensure
+          # You probably want to manually release lock after work is done
+          # This method can be safely called even if lock wasn't acquired
+          # by current worker (thread). For more references see RedisLock class
+          lock.release!
+      end
     else
       # reschedule, raise an error or do whatever you want
     end
-
-    # ...
-
-    ensure
-      lock.release! # you probably want to manually release lock after work is done
   end
 end
 ```
