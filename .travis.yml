@@ -5,11 +5,11 @@ services:
 
 rvm:
   - 1.9.3
-  - jruby-19mode
-  - rbx
+  - jruby-1.7.11
+  - rbx-2.2.9
   - 2.0.0
   - 2.1.0
-  - ruby-head
+  - 2.1.2
 
 notifications:
   email: false

@@ -86,11 +86,11 @@ class Worker
       begin
         # I can do the work
         # ...
-        ensure
-          # You probably want to manually release lock after work is done
-          # This method can be safely called even if lock wasn't acquired
-          # by current worker (thread). For more references see RedisLock class
-          lock.release!
+      ensure
+        # You probably want to manually release lock after work is done
+        # This method can be safely called even if lock wasn't acquired
+        # by current worker (thread). For more references see RedisLock class
+        lock.release!
       end
     else
       # reschedule, raise an error or do whatever you want
