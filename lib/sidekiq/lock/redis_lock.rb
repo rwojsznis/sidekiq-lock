@@ -65,7 +65,12 @@ module Sidekiq
         end
 
         def value
-          @value ||= SecureRandom.hex(25)
+          @value ||= set_lock_value(options[:value])
+        end
+
+        def set_lock_value(custom_value)
+          return SecureRandom.hex(25) unless custom_value
+          custom_value.respond_to?(:call) ? custom_value.call(*payload) : custom_value
         end
     end
   end
