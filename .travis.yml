@@ -6,7 +6,8 @@ services:
 rvm:
   - 2.0.0
   - 2.1.0
-  - 2.2.0
+  # seems like rack 2.0.1 needs it
+  - 2.2.2
   - 2.3.0
   - 2.3.1
 
