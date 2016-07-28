@@ -87,17 +87,14 @@ module Sidekiq
         assert_equal new_lock_value, redis("get", "test-lock")
       end
 
-      context 'with custom lock value' do
-        let(:args) { [{'timeout' => 100, 'name' => 'test-lock', 'value' => 'custom_value'}, []] }
+      it "releases taken lock" do
+        custom_args = args.first.merge('value' => 'custom_value')
+        lock = RedisLock.new(*custom_args)
+        lock.acquire!
+        assert redis("get", "test-lock")
 
-        it "releases taken lock" do
-          lock = RedisLock.new(*args)
-          lock.acquire!
-          assert redis("get", "test-lock")
-
-          lock.release!
-          assert_nil redis("get", "test-lock")
-        end
+        lock.release!
+        assert_nil redis("get", "test-lock")
       end
     end
   end
