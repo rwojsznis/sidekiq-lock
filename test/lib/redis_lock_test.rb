@@ -40,11 +40,15 @@ module Sidekiq
       it "can accept block as arguments" do
         lock = RedisLock.new({
             'timeout' => proc { |options| options['timeout'] * 2 },
-            'name'    => proc { |options| "#{options['test']}-sidekiq" }
+            'name'    => proc { |options| "#{options['test']}-sidekiq" },
+            'value'    => proc { |options| "#{options['test']}-sidekiq" }
           }, ['timeout' => 500, 'test' => 'hello'])
 
         assert_equal 1000, lock.timeout
         assert_equal 'hello-sidekiq', lock.name
+        lock.acquire!
+        assert_equal 'hello-sidekiq', redis("get", lock.name)
+        lock.release!
       end
 
       it "can acquire a lock" do
@@ -83,6 +87,16 @@ module Sidekiq
         lock.release!
 
         assert_equal new_lock_value, redis("get", "test-lock")
+      end
+
+      it "releases taken lock" do
+        custom_args = [args.first.merge('value' => 'custom_value'), []]
+        lock = RedisLock.new(*custom_args)
+        lock.acquire!
+        assert redis("get", "test-lock")
+
+        lock.release!
+        assert_nil redis("get", "test-lock")
       end
     end
   end

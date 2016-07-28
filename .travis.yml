@@ -4,12 +4,12 @@ services:
   - redis-server
 
 rvm:
-  - 1.9.3
-  - jruby-1.7.11
-  - rbx-2.2.9
   - 2.0.0
   - 2.1.0
-  - 2.1.2
+  # seems like rack 2.0.1 needs it
+  - 2.2.2
+  - 2.3.0
+  - 2.3.1
 
 notifications:
   email: false
