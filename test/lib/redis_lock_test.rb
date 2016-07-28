@@ -46,7 +46,9 @@ module Sidekiq
 
         assert_equal 1000, lock.timeout
         assert_equal 'hello-sidekiq', lock.name
-        assert_equal 'hello-sidekiq', redis("get", "lock.name")
+        lock.acquire!
+        assert_equal 'hello-sidekiq', redis("get", lock.name)
+        lock.release!
       end
 
       it "can acquire a lock" do
@@ -88,7 +90,7 @@ module Sidekiq
       end
 
       it "releases taken lock" do
-        custom_args = args.first.merge('value' => 'custom_value')
+        custom_args = [args.first.merge('value' => 'custom_value'), []]
         lock = RedisLock.new(*custom_args)
         lock.acquire!
         assert redis("get", "test-lock")
