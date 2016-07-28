@@ -66,6 +66,7 @@ sidekiq_options lock will accept static values or `Proc` that will be called on 
 
 - timeout - specified expire time, in milliseconds
 - name - name of the redis key that will be used as lock name
+- value - (optional) value of the lock, if not provided it's set to random hex
 
 Dynamic lock example:
 
@@ -75,7 +76,8 @@ class Worker
   include Sidekiq::Lock::Worker
   sidekiq_options lock: {
     timeout: proc { |user_id, timeout| timeout * 2 },
-    name:    proc { |user_id, timeout| "lock:peruser:#{user_id}" }
+    name:    proc { |user_id, timeout| "lock:peruser:#{user_id}" },
+    value:    proc { |user_id, timeout| "#{user_id}" }
   }
 
   def perform(user_id, timeout)

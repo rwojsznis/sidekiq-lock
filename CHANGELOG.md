@@ -1,3 +1,15 @@
+## 0.3.0
+
+- ability to set custom lock value. Works just like setting timeout and name (handles procs as well).
+
+``` ruby
+sidekiq_options lock: {
+    timeout: timeout,
+    name:    name,
+    value:   custom_value
+  }
+```
+
 ## 0.2.0
 
 - ability to globally configure `lock` method name
