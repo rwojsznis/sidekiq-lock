@@ -77,7 +77,7 @@ class Worker
   sidekiq_options lock: {
     timeout: proc { |user_id, timeout| timeout * 2 },
     name:    proc { |user_id, timeout| "lock:peruser:#{user_id}" },
-    value:    proc { |user_id, timeout| "#{user_id}" }
+    value:   proc { |user_id, timeout| "#{user_id}" }
   }
 
   def perform(user_id, timeout)
