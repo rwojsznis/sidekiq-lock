@@ -4,12 +4,11 @@ services:
   - redis-server
 
 rvm:
-  - 2.0.0
-  - 2.1.0
-  # seems like rack 2.0.1 needs it
-  - 2.2.2
-  - 2.3.0
-  - 2.3.1
+  - 2.2.9
+  - 2.3.6
+  - 2.4.3
+  - 2.5.0
+  - 2.6.0-preview1
 
 notifications:
   email: false
