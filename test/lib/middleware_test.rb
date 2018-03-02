@@ -3,7 +3,6 @@ require "test_helper"
 module Sidekiq
   module Lock
     describe Middleware do
-
       before do
         Sidekiq.redis = REDIS
         Sidekiq.redis { |c| c.flushdb }

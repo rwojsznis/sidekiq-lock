@@ -1,16 +1,18 @@
 module Sidekiq
   module Lock
     class RedisLock
-      attr_reader :options, :payload
-
       # checks for configuration
-      def initialize(options, payload)
-        @options  = options.symbolize_keys
+      def initialize(options_hash, payload)
+        @options = {}
+
+        options_hash.each_key do |key|
+          @options[key.to_sym] = options_hash[key]
+        end
+
         @payload  = payload
         @acquired = false
 
-        timeout
-        name
+        timeout && name
       end
 
       def acquired?
@@ -36,42 +38,44 @@ module Sidekiq
       end
 
       def name
-        raise ArgumentError, "Provide a lock name inside sidekiq_options" if options[:name].nil?
+        raise ArgumentError, 'Provide a lock name inside sidekiq_options' if options[:name].nil?
 
         @name ||= (options[:name].respond_to?(:call) ? options[:name].call(*payload) : options[:name])
       end
 
       def timeout
-        raise ArgumentError, "Provide lock timeout inside sidekiq_options" if options[:timeout].nil?
+        raise ArgumentError, 'Provide lock timeout inside sidekiq_options' if options[:timeout].nil?
 
         @timeout ||= (options[:timeout].respond_to?(:call) ? options[:timeout].call(*payload) : options[:timeout]).to_i
       end
 
       private
 
-        def redis_lock_script_sha
-          @lock_script_sha ||= Digest::SHA1.hexdigest redis_lock_script
-        end
+      attr_reader :options, :payload
 
-        def redis_lock_script
-          <<-LUA
-          if redis.call("get", KEYS[1]) == ARGV[1]
-          then
-            return redis.call("del",KEYS[1])
-          else
-            return 0
-          end
-          LUA
-        end
+      def redis_lock_script_sha
+        @lock_script_sha ||= Digest::SHA1.hexdigest redis_lock_script
+      end
 
-        def value
-          @value ||= set_lock_value(options[:value])
+      def redis_lock_script
+        <<-LUA
+        if redis.call("get", KEYS[1]) == ARGV[1]
+        then
+          return redis.call("del",KEYS[1])
+        else
+          return 0
         end
+        LUA
+      end
 
-        def set_lock_value(custom_value)
-          return SecureRandom.hex(25) unless custom_value
-          custom_value.respond_to?(:call) ? custom_value.call(*payload) : custom_value
-        end
+      def value
+        @value ||= set_lock_value(options[:value])
+      end
+
+      def set_lock_value(custom_value)
+        return SecureRandom.hex(25) unless custom_value
+        custom_value.respond_to?(:call) ? custom_value.call(*payload) : custom_value
+      end
     end
   end
 end

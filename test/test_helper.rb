@@ -3,9 +3,6 @@ Coveralls.wear! do
   add_filter "/test/"
 end
 
-Encoding.default_external = Encoding::UTF_8
-Encoding.default_internal = Encoding::UTF_8
-
 require "minitest/autorun"
 require "minitest/pride"
 require "mocha/setup"

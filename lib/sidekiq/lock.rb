@@ -1,12 +1,11 @@
-require "sidekiq/lock/middleware"
-require "sidekiq/lock/redis_lock"
-require "sidekiq/lock/version"
-require "sidekiq/lock/worker"
+require 'sidekiq/lock/middleware'
+require 'sidekiq/lock/redis_lock'
+require 'sidekiq/lock/version'
+require 'sidekiq/lock/worker'
 
 module Sidekiq
-
   def self.lock_method
-    @lock_method || :lock
+    @lock_method ||= :lock
   end
 
   def self.lock_method=(method)

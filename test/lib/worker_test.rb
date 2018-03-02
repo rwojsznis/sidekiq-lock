@@ -3,7 +3,6 @@ require "test_helper"
 module Sidekiq
   module Lock
     describe Worker do
-
       after { set_lock_variable! }
 
       it 'sets lock method that points to thread variable' do

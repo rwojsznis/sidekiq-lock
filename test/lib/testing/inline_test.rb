@@ -2,7 +2,6 @@ require "test_helper"
 require "sidekiq/lock/testing/inline"
 
 describe "inline test helper" do
-
   after { set_lock_variable! }
 
   it "has helper fuction for setting lock" do
