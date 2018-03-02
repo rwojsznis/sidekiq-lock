@@ -22,4 +22,3 @@ Sidekiq.configure_server do |config|
     chain.add Sidekiq::Lock::Middleware
   end
 end
-

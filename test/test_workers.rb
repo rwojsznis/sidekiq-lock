@@ -1,3 +1,5 @@
+require 'sidekiq-lock'
+
 class LockWorker
   include Sidekiq::Worker
   include Sidekiq::Lock::Worker

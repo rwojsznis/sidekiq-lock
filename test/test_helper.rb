@@ -1,19 +1,18 @@
 require 'coveralls'
 Coveralls.wear! do
-  add_filter "/test/"
+  add_filter '/test/'
 end
 
-require "minitest/autorun"
-require "minitest/pride"
-require "mocha/setup"
+require 'minitest/autorun'
+require 'minitest/pride'
+require 'mocha/setup'
 
-require "sidekiq"
-require "sidekiq-lock"
-require "test_workers"
+require 'sidekiq'
+require 'test_workers'
 
 Sidekiq.logger.level = Logger::ERROR
 
-REDIS = Sidekiq::RedisConnection.create(url: "redis://localhost/15", namespace: "sidekiq_lock_test")
+REDIS = Sidekiq::RedisConnection.create(url: 'redis://localhost/15', namespace: 'sidekiq_lock_test')
 
 def redis(command, *args)
   Sidekiq.redis do |c|
