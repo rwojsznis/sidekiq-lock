@@ -1,6 +1,7 @@
 ## 0.3.1 (unreleased)
 
-- do not assume ActiveSupport is loaded / or old Sidekiq patches are present (add own symbolize keys method)
+- do not assume ActiveSupport is loaded / or old Sidekiq patches are present (add own symbolize keys logic)
+- make `options` and `payload` attr readers as `private` in `RedisLock` as it should be - **potentially breaking change** if you were accessing those (abusing) somehow for whatever reason (that shouldn't happen in the first place!)
 
 ## 0.3.0 (July 28, 2016)
 
