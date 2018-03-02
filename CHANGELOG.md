@@ -1,4 +1,8 @@
-## 0.3.0
+## 0.3.1 (unreleased)
+
+- do not assume ActiveSupport is loaded / or old Sidekiq patches are present (add own symbolize keys method)
+
+## 0.3.0 (July 28, 2016)
 
 - ability to set custom lock value. Works just like setting timeout and name (handles procs as well).
 
@@ -10,7 +14,7 @@ sidekiq_options lock: {
   }
 ```
 
-## 0.2.0
+## 0.2.0 (December 08, 2013)
 
 - ability to globally configure `lock` method name
 
@@ -30,6 +34,6 @@ end
   That will setup `RedisLock` under proper thread variable.
   This can be handy if you test your workers inline (without full stack middleware)
 
-## 0.0.1
+## 0.0.1 (October 14, 2013)
 
 - Initial release
