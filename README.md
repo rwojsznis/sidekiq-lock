@@ -6,6 +6,8 @@
 [![Dependency Status](https://gemnasium.com/emq/sidekiq-lock.png)](https://gemnasium.com/emq/sidekiq-lock)
 [![Gem Version](https://badge.fury.io/rb/sidekiq-lock.png)](http://badge.fury.io/rb/sidekiq-lock)
 
+**Note:** This is a _complete_ piece of software, it should work across all future sidekiq & ruby versions.
+
 Redis-based simple locking mechanism for [sidekiq][2]. Uses [SET command][1] introduced in Redis 2.6.16.
 
 It can be handy if you push a lot of jobs into the queue(s), but you don't want to execute specific jobs at the same time - it provides a `lock` method that you can use in whatever way you want.
