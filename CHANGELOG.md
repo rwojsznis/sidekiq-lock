@@ -1,6 +1,6 @@
 ## 0.3.1 (March 3, 2018)
 
-- do not assume ActiveSupport is loaded / or old Sidekiq patches are present (add own symbolize keys logic)
+- do not assume `ActiveSupport` is loaded / or old `Sidekiq` patches are present (add own symbolize keys logic)
 - make `options` and `payload` attr readers as `private` in `RedisLock` as it should be - **potentially breaking change** if you were accessing those (abusing) somehow for whatever reason (that shouldn't happen in the first place!)
 - run test on travis for sidekiq `2.17`, `3.5`, `4.2` and `>= 5.1` and all newest rubies (`2.2` - `2.5`)
 
