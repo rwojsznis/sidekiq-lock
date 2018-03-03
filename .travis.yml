@@ -3,6 +3,12 @@ language: ruby
 services:
   - redis-server
 
+gemfile:
+  - gemfiles/sidekiq_2.gemfile
+  - gemfiles/sidekiq_3.gemfile
+  - gemfiles/sidekiq_4.gemfile
+  - gemfiles/sidekiq_5.gemfile
+
 rvm:
   - 2.2.9
   - 2.3.6

@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "coveralls", "~> 0.8"
   spec.add_development_dependency "mocha", "~> 0.14.0"
   spec.add_development_dependency "minitest"
-  spec.add_development_dependency "redis-namespace"
+  spec.add_development_dependency "appraisal"
 end
