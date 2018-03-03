@@ -18,3 +18,4 @@ tmp
 .rvmrc
 .ruby-version
 .ruby-gemset
+*.gemfile.lock
