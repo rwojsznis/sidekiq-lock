@@ -1,7 +1,7 @@
 module Sidekiq
   module Lock
     class Middleware
-      def call(worker, msg, queue)
+      def call(worker, msg, _queue)
         options = lock_options(worker)
         setup_lock(options, msg['args']) unless options.nil?
 
@@ -11,7 +11,7 @@ module Sidekiq
       private
 
       def setup_lock(options, payload)
-        Thread.current[Sidekiq::Lock::THREAD_KEY] = RedisLock.new(options, payload)
+        Sidekiq.lock_container.store(RedisLock.new(options, payload))
       end
 
       def lock_options(worker)

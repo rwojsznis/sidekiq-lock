@@ -20,10 +20,14 @@ def redis(command, *args)
   end
 end
 
-def set_lock_variable!(value = nil)
-  Thread.current[Sidekiq::Lock::THREAD_KEY] = value
+def set_lock_variable!(value)
+  Sidekiq.lock_container.store(value)
 end
 
-def lock_thread_variable
-  Thread.current[Sidekiq::Lock::THREAD_KEY]
+def reset_lock_variable!
+  set_lock_variable!(nil)
+end
+
+def lock_container_variable
+  Sidekiq.lock_container.fetch
 end

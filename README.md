@@ -9,7 +9,8 @@
 
 Redis-based simple locking mechanism for [sidekiq][2]. Uses [SET command][1] introduced in Redis 2.6.16.
 
-It can be handy if you push a lot of jobs into the queue(s), but you don't want to execute specific jobs at the same time - it provides a `lock` method that you can use in whatever way you want.
+It can be handy if you push a lot of jobs into the queue(s), but you don't want to execute specific jobs at the same
+time - it provides a `lock` method that you can use in whatever way you want.
 
 ## Installation
 
@@ -33,7 +34,8 @@ $ bundle
 
 Sidekiq-lock is a middleware/module combination, let me go through my thought process here :).
 
-In your worker class include `Sidekiq::Lock::Worker` module and provide `lock` attribute inside `sidekiq_options`, for example:
+In your worker class include `Sidekiq::Lock::Worker` module and provide `lock` attribute inside `sidekiq_options`,
+for example:
 
 ``` ruby
 class Worker
@@ -51,13 +53,17 @@ end
 
 What will happen is:
 
-- middleware will setup a `Sidekiq::Lock::RedisLock` object under `Thread.current[Sidekiq::Lock::THREAD_KEY]` (well, I had no better idea for this) - assuming you provided `lock` options, otherwise it will do nothing, just execute your worker's code
+- middleware will setup a `Sidekiq::Lock::RedisLock` object under `Thread.current[Sidekiq::Lock::THREAD_KEY]`
+(it should work in most use cases without any problems - but it's configurable, more below) - assuming you provided
+`lock` options, otherwise it will do nothing, just execute your worker's code
 
-- `Sidekiq::Lock::Worker` module provides a `lock` method that just simply points to that thread variable, just as a convenience
+- `Sidekiq::Lock::Worker` module provides a `lock` method that just simply points to that thread variable, just as
+a convenience
 
 So now in your worker class you can call (whenever you need):
 
-- `lock.acquire!` - will try to acquire the lock, if returns false on failure (that means some other process / thread took the lock first)
+- `lock.acquire!` - will try to acquire the lock, if returns false on failure (that means some other process / thread
+took the lock first)
 - `lock.acquired?` - set to `true` when lock is successfully acquired
 - `lock.release!` - deletes the lock (only if it's: acquired by current thread and not already expired)
 
@@ -114,9 +120,32 @@ Sidekiq.configure_server do |config|
 end
 ```
 
+### Customizing lock _container_
+
+If you would like to change default behavior of storing lock instance in `Thread.current` for whatever reason you
+can do that as well via server configuration:
+
+``` ruby
+# Any thread-safe class that implements .fetch and .store methods will do
+class CustomStorage
+  def fetch
+    # returns stored lock instance
+  end
+  
+  def store(lock_instance)
+    # store lock
+  end
+end
+
+Sidekiq.configure_server do |config|
+  config.lock_container = CustomStorage.new
+end
+```
+
 ### Inline testing
 
-As you know middleware is not invoked when testing jobs inline, you can require in your test/spec helper file `sidekiq/lock/testing/inline` to include two methods that will help you setting / clearing up lock manually:
+As you know middleware is not invoked when testing jobs inline, you can require in your test/spec helper file
+`sidekiq/lock/testing/inline` to include two methods that will help you setting / clearing up lock manually:
 
 - `set_sidekiq_lock(worker_class, payload)` - note: payload should be an array of worker arguments
 - `clear_sidekiq_lock`
