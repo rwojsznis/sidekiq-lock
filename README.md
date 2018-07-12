@@ -3,7 +3,6 @@
 [![Code Climate](https://codeclimate.com/github/emq/sidekiq-lock.png)](https://codeclimate.com/github/emq/sidekiq-lock)
 [![Build Status](https://travis-ci.org/emq/sidekiq-lock.png?branch=master)](https://travis-ci.org/emq/sidekiq-lock)
 [![Coverage Status](https://coveralls.io/repos/emq/sidekiq-lock/badge.png)](https://coveralls.io/r/emq/sidekiq-lock)
-[![Dependency Status](https://gemnasium.com/emq/sidekiq-lock.png)](https://gemnasium.com/emq/sidekiq-lock)
 [![Gem Version](https://badge.fury.io/rb/sidekiq-lock.png)](http://badge.fury.io/rb/sidekiq-lock)
 
 **Note:** This is a _complete_ piece of software, it should work across all future sidekiq & ruby versions.
