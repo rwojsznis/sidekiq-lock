@@ -1,3 +1,7 @@
+## 0.4.0 (July 18, 2018)
+
+- make lock container configurable (non breaking change) - in case you would like to something else than `Thread.current` - now you easily can
+
 ## 0.3.1 (March 3, 2018)
 
 - do not assume `ActiveSupport` is loaded / or old `Sidekiq` patches are present (add own symbolize keys logic)
