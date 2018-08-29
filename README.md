@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300" height="210" src="https://github.com/emq/sidekiq-lock/raw/master/logo.png">
+</p>
+
 # Sidekiq::Lock
 
 [![Code Climate](https://codeclimate.com/github/emq/sidekiq-lock.png)](https://codeclimate.com/github/emq/sidekiq-lock)
