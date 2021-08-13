@@ -20,3 +20,4 @@ tmp
 .ruby-gemset
 *.gemfile.lock
 .idea/
+.DS_Store
