@@ -1,3 +1,7 @@
+## Unreleased
+
+- maintenance - test on latest sidekiq & ruby versions
+
 ## 0.4.0 (July 18, 2018)
 
 - make lock container configurable (non breaking change) - in case you would like to something else than `Thread.current` - now you easily can
