@@ -1,0 +1,15 @@
+version: "3"
+services:
+   redis:
+    image: redis:6.0-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: redis-cli ping
+      interval: 10s
+      timeout: 3s
+
+volumes:
+  redis:
