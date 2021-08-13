@@ -1,6 +1,7 @@
-## Unreleased
+## 0.5.0 (August 13, 2021)
 
-- maintenance - test on latest sidekiq & ruby versions
+- maintenance - test on latest ruby versions (remove outdated rubies from build), add sidekiq 6 to build matrix, remove coveralls
+- fix for ruby 3 (thanks to @ak15)
 
 ## 0.4.0 (July 18, 2018)
 
