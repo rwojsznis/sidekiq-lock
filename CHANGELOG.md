@@ -1,7 +1,7 @@
 ## 0.5.0 (August 13, 2021)
 
 - maintenance - test on latest ruby versions (remove outdated rubies from build), add sidekiq 6 to build matrix, remove coveralls
-- fix for ruby 3 (thanks to @ak15)
+- fix for ruby 3 (thanks to [@ak15](https://github.com/ak15))
 
 ## 0.4.0 (July 18, 2018)
 
@@ -15,7 +15,7 @@
 
 ## 0.3.0 (July 28, 2016)
 
-- ability to set custom lock value. Works just like setting timeout and name (handles procs as well).
+- ability to set custom lock value. Works just like setting timeout and name, handles procs as well (thanks to [@piokaczm](https://github.com/piokaczm))
 
 ``` ruby
 sidekiq_options lock: {
