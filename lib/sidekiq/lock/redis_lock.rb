@@ -27,12 +27,24 @@ module Sidekiq
         end
       end
 
-      def release!
-        Sidekiq.redis do |r|
-          begin
-            r.evalsha redis_lock_script_sha, keys: [name], argv: [value]
-          rescue Redis::CommandError
-            r.eval redis_lock_script, keys: [name], argv: [value]
+      if Sidekiq::VERSION >= '7'
+        def release!
+          Sidekiq.redis do |r|
+            begin
+              r.evalsha redis_lock_script_sha, [name], [value]
+            rescue RedisClient::CommandError
+              r.eval redis_lock_script, [name], [value]
+            end
+          end
+        end
+      else
+        def release!
+          Sidekiq.redis do |r|
+            begin
+              r.evalsha redis_lock_script_sha, keys: [name], argv: [value]
+            rescue Redis::CommandError
+              r.eval redis_lock_script, keys: [name], argv: [value]
+            end
           end
         end
       end
