@@ -4,7 +4,13 @@ module Sidekiq
   module Lock
     describe RedisLock do
       before do
-        Sidekiq.redis = REDIS
+        if Sidekiq::VERSION >= '7'
+          Sidekiq.configure_client do |config|
+            config.redis = { url: REDIS_URL }
+          end
+        else
+          Sidekiq.redis = REDIS
+        end
         Sidekiq.redis { |c| c.flushdb }
       end
 

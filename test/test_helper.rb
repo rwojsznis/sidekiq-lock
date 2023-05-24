@@ -7,7 +7,8 @@ require 'test_workers'
 
 Sidekiq.logger.level = Logger::ERROR
 
-REDIS = Sidekiq::RedisConnection.create(url: 'redis://localhost/15')
+REDIS_URL = 'redis://localhost/15'
+REDIS = Sidekiq::RedisConnection.create(url: REDIS_URL)
 
 def redis(command, *args)
   Sidekiq.redis do |c|
