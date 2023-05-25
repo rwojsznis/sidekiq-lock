@@ -4,7 +4,7 @@ require 'open3'
 module Sidekiq
   describe Lock do
     it 'automatically loads lock middleware for sidekiq server' do
-      skip 'Sidekiq 2 does not print out middleware information' if Sidekiq::VERSION < '3.0.0'
+      skip 'Sidekiq 7+ does not print out middleware information' if Sidekiq::VERSION >= '7'
 
       cmd = 'sidekiq -r ./test/test_workers.rb -v'
       buffer = ''

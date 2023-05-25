@@ -33,7 +33,7 @@ module Sidekiq
             begin
               r.evalsha redis_lock_script_sha, [name], [value]
             rescue RedisClient::CommandError
-              r.eval redis_lock_script, [name], [value]
+              r.eval redis_lock_script, 1, [name], [value]
             end
           end
         end
