@@ -1,11 +1,10 @@
 <p align="center">
-  <img width="300" height="210" src="https://github.com/emq/sidekiq-lock/raw/master/logo.png">
+  <img width="300" height="210" src="https://github.com/rwojsznis/sidekiq-lock/raw/main/logo.png">
 </p>
 
 # Sidekiq::Lock
 
-[![Code Climate](https://codeclimate.com/github/emq/sidekiq-lock.png)](https://codeclimate.com/github/emq/sidekiq-lock)
-[![Build Status](https://app.travis-ci.com/rwojsznis/sidekiq-lock.svg?branch=master)](https://app.travis-ci.com/rwojsznis/sidekiq-lock)
+[![Code Climate](https://codeclimate.com/github/rwojsznis/sidekiq-lock.png)](https://codeclimate.com/github/rwojsznis/sidekiq-lock)
 [![Gem Version](https://badge.fury.io/rb/sidekiq-lock.png)](http://badge.fury.io/rb/sidekiq-lock)
 
 **Note:** This is a _complete_ piece of software, it should work across all future sidekiq & ruby versions.
