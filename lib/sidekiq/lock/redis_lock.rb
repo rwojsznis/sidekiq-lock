@@ -27,26 +27,13 @@ module Sidekiq
         end
       end
 
-      if Sidekiq::VERSION >= '7'
-        def release!
-          Sidekiq.redis do |r|
-            begin
-              r.evalsha redis_lock_script_sha, [name], [value]
-            rescue RedisClient::CommandError
-              r.eval redis_lock_script, 1, [name], [value]
-            end
-          end
-        end
-      else
-        def release!
-          Sidekiq.redis do |r|
-            begin
-              r.evalsha redis_lock_script_sha, keys: [name], argv: [value]
-            rescue Redis::CommandError
-              r.eval redis_lock_script, keys: [name], argv: [value]
-            end
-          end
-        end
+      def release!
+        # even if lock expired / was take over by another process
+        # it still means from our perspective that we released it
+        @acquired = false
+
+        # https://redis.io/commands/del/#return
+        release_lock == 1
       end
 
       def name
@@ -64,6 +51,27 @@ module Sidekiq
       private
 
       attr_reader :options, :payload
+
+      def release_lock
+        # Sidekiq 7 uses redis-client gem, designed for redis 6+
+        if Sidekiq::VERSION >= '7'
+          Sidekiq.redis do |r|
+            begin
+              r.evalsha redis_lock_script_sha, [name], [value]
+            rescue RedisClient::CommandError
+              r.eval redis_lock_script, 1, [name], [value]
+            end
+          end
+        else
+          Sidekiq.redis do |r|
+            begin
+              r.evalsha redis_lock_script_sha, keys: [name], argv: [value]
+            rescue Redis::CommandError
+              r.eval redis_lock_script, keys: [name], argv: [value]
+            end
+          end
+        end
+      end
 
       def redis_lock_script_sha
         @lock_script_sha ||= Digest::SHA1.hexdigest redis_lock_script
