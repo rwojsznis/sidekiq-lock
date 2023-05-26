@@ -20,7 +20,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     services:
       redis:
-        image: redis:{{ matrix.redis }}
+        image: redis:${{ matrix.redis }}
         ports:
           - 6379:6379
     steps:
