@@ -1,3 +1,8 @@
+## 0.6.0 (May 27, 2023)
+
+- support for Sidekiq 7 (thanks to [@stympy](https://github.com/stympy))
+- move CI pipelines to Github Actions - drop tests for everything below Sidekiq 5, run tests on redis 6.2 & 7.0 and ruby 2.6 - 3.1
+
 ## 0.5.0 (August 13, 2021)
 
 - maintenance - test on latest ruby versions (remove outdated rubies from build), add sidekiq 6 to build matrix, remove coveralls
