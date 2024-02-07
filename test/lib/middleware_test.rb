@@ -15,9 +15,8 @@ module Sidekiq
         reset_lock_variable!
       end
 
-      let(:handler) { Sidekiq::Lock::Middleware.new }
-
       it 'sets lock variable with provided static lock options' do
+        handler = Sidekiq::Lock::Middleware.new
         handler.call(LockWorker.new, { 'class' => LockWorker, 'args' => [] }, 'default') do
           true
         end
@@ -26,6 +25,7 @@ module Sidekiq
       end
 
       it 'sets lock variable with provided dynamic options' do
+        handler = Sidekiq::Lock::Middleware.new
         handler.call(DynamicLockWorker.new, { 'class' => DynamicLockWorker, 'args' => [1234, 1000] }, 'default') do
           true
         end
@@ -35,6 +35,7 @@ module Sidekiq
       end
 
       it 'sets nothing for workers without lock options' do
+        handler = Sidekiq::Lock::Middleware.new
         handler.call(RegularWorker.new, { 'class' => RegularWorker, 'args' => [] }, 'default') do
           true
         end

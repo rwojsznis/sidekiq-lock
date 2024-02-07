@@ -2,8 +2,8 @@ appraise 'sidekiq-5' do
   gem 'sidekiq', '~> 5.1', '>= 5.1'
 end
 
-appraise 'sidekiq-6' do
-  gem 'sidekiq', '~> 6.1', '>= 6.1.1'
+appraise 'sidekiq-6_1' do
+  gem 'sidekiq', '~> 6.1', '>= 6.1.1', '< 6.2'
 end
 
 appraise 'sidekiq-7-1' do
