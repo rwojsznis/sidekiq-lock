@@ -1,7 +1,5 @@
 require 'minitest/autorun'
-require 'minitest/pride'
-require 'mocha/setup'
-
+require 'mocha/minitest'
 require 'sidekiq'
 require 'test_workers'
 

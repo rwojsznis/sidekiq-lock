@@ -21,3 +21,4 @@ tmp
 *.gemfile.lock
 .idea/
 .DS_Store
+.tool-versions

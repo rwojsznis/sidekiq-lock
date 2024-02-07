@@ -23,7 +23,11 @@ module Sidekiq
       # this also requires redis-rb >= 3.0.5
       def acquire!
         @acquired ||= Sidekiq.redis do |r|
-          r.set(name, value, nx: true, px: timeout)
+          if Sidekiq::VERSION >= '7.2'
+            r.set(name, value, 'nx', 'px', timeout)
+          else
+            r.set(name, value, nx: true, px: timeout)
+          end
         end
       end
 

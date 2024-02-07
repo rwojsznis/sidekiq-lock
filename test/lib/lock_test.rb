@@ -7,23 +7,24 @@ module Sidekiq
       skip 'Sidekiq 7+ does not print out middleware information' if Sidekiq::VERSION >= '7'
 
       cmd = 'sidekiq -r ./test/test_workers.rb -v'
-      buffer = ''
+      buffer_out = ''
 
       # very not fancy (https://78.media.tumblr.com/tumblr_lzkpw7DAl21qhy6c9o2_400.gif)
       # solution, but should do the job
       Open3.popen3(cmd) do |stdin, stdout, stderr, thread|
         begin
-          Timeout.timeout(5) do
+          Timeout.timeout(3) do
             until stdout.eof? do
-              buffer << stdout.read_nonblock(16)
+              buffer_out << stdout.read_nonblock(16)
             end
           end
+
         rescue Timeout::Error
           Process.kill('KILL', thread.pid)
         end
       end
 
-      assert_match(/\s?Middleware:.*Sidekiq::Lock::Middleware/i, buffer)
+      assert_match(/\s?Middleware:.*Sidekiq::Lock::Middleware/i, buffer_out)
     end
   end
 end
