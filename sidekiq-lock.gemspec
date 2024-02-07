@@ -16,6 +16,5 @@ Gem::Specification.new do |spec|
   spec.test_files    = Dir["test/**/*"]
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "sidekiq", ">= 2.14.0"
-  spec.add_dependency "redis",   ">= 3.0.5"
+  spec.add_dependency "sidekiq", ">= 6"
 end

@@ -6,4 +6,3 @@ group :test do
 end
 
 gem "appraisal"
-

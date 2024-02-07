@@ -18,7 +18,7 @@ time - it provides a `lock` method that you can use in whatever way you want.
 
 This gem requires at least:
 - redis 2.6.12
-- redis-rb 3.0.5 (support for extended SET method)
+- sidekiq 6
 
 Add this line to your application's Gemfile:
 

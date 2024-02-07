@@ -1,3 +1,9 @@
+## 0.7.0 (Feb 7, 2024)
+
+- support for Sidekiq 7.2 (thanks for the issue report [9mm](https://github.com/9mm))
+- dropped support for Sidekiq 5 and older [as it reached EOL](https://github.com/sidekiq/sidekiq/wiki/Commercial-Support#version-policy)
+- removed `redis` as gem dependency (relying on sidekiq version you're using to choose the right one)
+
 ## 0.6.0 (May 27, 2023)
 
 - support for Sidekiq 7 (thanks to [@stympy](https://github.com/stympy))

@@ -1,4 +1,4 @@
-Copyright (c) 2013 Rafal Wojsznis
+Copyright (c) 2024 Rafal Wojsznis
 
 MIT License
 
