@@ -1,4 +1,7 @@
 appraise 'sidekiq-6_1' do
+  # Sidekiq 6.1 assumes these are bundled with Ruby.
+  gem 'base64'
+  gem 'logger'
   gem 'sidekiq', '~> 6.1', '>= 6.1.1', '< 6.2'
 end
 
