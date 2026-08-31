@@ -60,18 +60,18 @@ module Sidekiq
         assert lock.acquire!
       end
 
-      it "sets proper lock value on first and second acquire" do
+      it "releases a lock after Redis flushes its script cache" do
         lock = RedisLock.new({'timeout' => 1000, 'name' => 'test-lock', 'value' => 'lock value'}, [])
         assert lock.acquire!
         assert_equal 'lock value', redis("get", lock.name)
         assert lock.release!
-        # at this point script should be used from evalsha
-        assert lock.acquire!
-        assert_equal 'lock value', redis("get", lock.name)
 
-        redis("script", "flush")
         assert lock.acquire!
         assert_equal 'lock value', redis("get", lock.name)
+        redis("script", "flush")
+
+        assert lock.release!
+        assert_nil redis("get", lock.name)
       end
 
       it "cannot acquire lock if it's already taken by other process/thread" do
