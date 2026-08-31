@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 appraise 'sidekiq-6_1' do
   # Sidekiq 6.1 assumes these are bundled with Ruby.
   gem 'base64'
