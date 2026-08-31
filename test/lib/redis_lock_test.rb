@@ -38,6 +38,28 @@ module Sidekiq
         assert RedisLock.new({ 'timeout' => 500, 'name' => 'lock-name' }, [])
       end
 
+      it "rejects an empty evaluated name" do
+        error = assert_raises ArgumentError do
+          RedisLock.new({ 'timeout' => 500, 'name' => proc { nil } }, [])
+        end
+
+        assert_equal 'Lock name must not be empty', error.message
+      end
+
+      it "rejects invalid evaluated timeouts" do
+        [nil, 'invalid', 0, -1].each do |timeout|
+          assert_raises ArgumentError do
+            RedisLock.new({ 'timeout' => proc { timeout }, 'name' => 'lock-name' }, [])
+          end
+        end
+      end
+
+      it "accepts a positive integer timeout encoded as a string" do
+        lock = RedisLock.new({ 'timeout' => '500', 'name' => 'lock-name' }, [])
+
+        assert_equal 500, lock.timeout
+      end
+
       it "is released by default" do
         lock = RedisLock.new({ 'timeout' => 500, 'name' => 'lock-name' }, [])
         refute lock.acquired?
@@ -82,6 +104,15 @@ module Sidekiq
 
         slower_lock = RedisLock.new({'timeout' => 100, 'name' => 'test-lock'}, [])
         refute slower_lock.acquire!
+      end
+
+      it "does not release a lock that this instance did not acquire" do
+        acquired_lock = RedisLock.new({'timeout' => 1000, 'name' => 'test-lock', 'value' => 'shared'}, [])
+        unacquired_lock = RedisLock.new({'timeout' => 1000, 'name' => 'test-lock', 'value' => 'shared'}, [])
+        assert acquired_lock.acquire!
+
+        refute unacquired_lock.release!
+        assert_equal 'shared', redis('get', 'test-lock')
       end
 
       it "releases taken lock" do

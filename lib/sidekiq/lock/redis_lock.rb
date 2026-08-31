@@ -37,6 +37,8 @@ module Sidekiq
       end
 
       def release!
+        return false unless acquired?
+
         # even if lock expired / was take over by another process
         # it still means from our perspective that we released it
         @acquired = false
@@ -48,13 +50,26 @@ module Sidekiq
       def name
         raise ArgumentError, 'Provide a lock name inside sidekiq_options' if options[:name].nil?
 
-        @name ||= (options[:name].respond_to?(:call) ? options[:name].call(*payload) : options[:name])
+        @name ||= begin
+          name = options[:name].respond_to?(:call) ? options[:name].call(*payload) : options[:name]
+          raise ArgumentError, 'Lock name must not be empty' if name.nil? || name.to_s.empty?
+
+          name
+        end
       end
 
       def timeout
         raise ArgumentError, 'Provide lock timeout inside sidekiq_options' if options[:timeout].nil?
 
-        @timeout ||= (options[:timeout].respond_to?(:call) ? options[:timeout].call(*payload) : options[:timeout]).to_i
+        @timeout ||= begin
+          timeout = options[:timeout].respond_to?(:call) ? options[:timeout].call(*payload) : options[:timeout]
+          timeout = Integer(timeout)
+          raise ArgumentError, 'Lock timeout must be positive' unless timeout.positive?
+
+          timeout
+        rescue TypeError, ArgumentError
+          raise ArgumentError, 'Lock timeout must be a positive integer'
+        end
       end
 
       private

@@ -98,9 +98,7 @@ class Worker
         # I can do the work
         # ...
       ensure
-        # You probably want to manually release lock after work is done
-        # This method can be safely called even if lock wasn't acquired
-        # by current worker (thread). For more references see RedisLock class
+        # You probably want to manually release the lock after work is done.
         lock.release!
       end
     else
@@ -114,18 +112,16 @@ Just be sure to provide valid redis key as a lock name.
 
 ### Customizing lock method name
 
-You can change `lock` to something else (globally) in sidekiq server configuration:
+You can change `lock` to something else globally before starting Sidekiq:
 
 ``` ruby
-Sidekiq.configure_server do |config|
-  config.lock_method = :redis_lock
-end
+Sidekiq.lock_method = :redis_lock
 ```
 
 ### Customizing lock _container_
 
 If you would like to change default behavior of storing lock instance in `Thread.current` for whatever reason you
-can do that as well via server configuration:
+can do that as well before starting Sidekiq:
 
 ``` ruby
 # Any thread-safe class that implements .fetch and .store methods will do
@@ -139,15 +135,23 @@ class CustomStorage
   end
 end
 
-Sidekiq.configure_server do |config|
-  config.lock_container = CustomStorage.new
-end
+Sidekiq.lock_container = CustomStorage.new
 ```
 
 ### Inline testing
 
-As you know middleware is not invoked when testing jobs inline, you can require in your test/spec helper file
-`sidekiq/lock/testing/inline` to include two methods that will help you setting / clearing up lock manually:
+`perform_inline` invokes Sidekiq's normal server middleware chain. `Sidekiq::Testing.inline!`, however, uses a
+separate testing middleware chain. Add the lock middleware to that chain if you want inline jobs to behave like
+production jobs:
+
+``` ruby
+Sidekiq::Testing.server_middleware do |chain|
+  chain.add Sidekiq::Lock::Middleware
+end
+```
+
+For tests that call `perform` directly, require `sidekiq/lock/testing/inline` in your test/spec helper to make these
+manual setup and cleanup methods available:
 
 - `set_sidekiq_lock(worker_class, payload)` - note: payload should be an array of worker arguments
 - `clear_sidekiq_lock`

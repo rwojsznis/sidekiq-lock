@@ -22,3 +22,17 @@ class RegularWorker
   include Sidekiq::Worker
   include Sidekiq::Lock::Worker
 end
+
+class InlineLockWorker
+  include Sidekiq::Worker
+  include Sidekiq::Lock::Worker
+  sidekiq_options lock: { timeout: 1000, name: proc { |argument| "inline-lock-#{argument}" } }
+
+  class << self
+    attr_accessor :observed_lock
+  end
+
+  def perform(argument)
+    self.class.observed_lock = [lock.name, lock.timeout]
+  end
+end
