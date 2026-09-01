@@ -1,11 +1,16 @@
+# frozen_string_literal: true
+
 module Sidekiq
   module Lock
     class Middleware
       def call(worker, msg, _queue)
         options = lock_options(worker)
+        Sidekiq.lock_container.store(nil)
         setup_lock(options, msg['args']) unless options.nil?
 
         yield
+      ensure
+        Sidekiq.lock_container.store(nil)
       end
 
       private

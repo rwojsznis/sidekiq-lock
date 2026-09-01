@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Sidekiq
@@ -36,6 +38,28 @@ module Sidekiq
         assert RedisLock.new({ 'timeout' => 500, 'name' => 'lock-name' }, [])
       end
 
+      it "rejects an empty evaluated name" do
+        error = assert_raises ArgumentError do
+          RedisLock.new({ 'timeout' => 500, 'name' => proc { nil } }, [])
+        end
+
+        assert_equal 'Lock name must not be empty', error.message
+      end
+
+      it "rejects invalid evaluated timeouts" do
+        [nil, 'invalid', 0, -1].each do |timeout|
+          assert_raises ArgumentError do
+            RedisLock.new({ 'timeout' => proc { timeout }, 'name' => 'lock-name' }, [])
+          end
+        end
+      end
+
+      it "accepts a positive integer timeout encoded as a string" do
+        lock = RedisLock.new({ 'timeout' => '500', 'name' => 'lock-name' }, [])
+
+        assert_equal 500, lock.timeout
+      end
+
       it "is released by default" do
         lock = RedisLock.new({ 'timeout' => 500, 'name' => 'lock-name' }, [])
         refute lock.acquired?
@@ -60,18 +84,18 @@ module Sidekiq
         assert lock.acquire!
       end
 
-      it "sets proper lock value on first and second acquire" do
+      it "releases a lock after Redis flushes its script cache" do
         lock = RedisLock.new({'timeout' => 1000, 'name' => 'test-lock', 'value' => 'lock value'}, [])
         assert lock.acquire!
         assert_equal 'lock value', redis("get", lock.name)
         assert lock.release!
-        # at this point script should be used from evalsha
-        assert lock.acquire!
-        assert_equal 'lock value', redis("get", lock.name)
 
-        redis("script", "flush")
         assert lock.acquire!
         assert_equal 'lock value', redis("get", lock.name)
+        redis("script", "flush")
+
+        assert lock.release!
+        assert_nil redis("get", lock.name)
       end
 
       it "cannot acquire lock if it's already taken by other process/thread" do
@@ -80,6 +104,15 @@ module Sidekiq
 
         slower_lock = RedisLock.new({'timeout' => 100, 'name' => 'test-lock'}, [])
         refute slower_lock.acquire!
+      end
+
+      it "does not release a lock that this instance did not acquire" do
+        acquired_lock = RedisLock.new({'timeout' => 1000, 'name' => 'test-lock', 'value' => 'shared'}, [])
+        unacquired_lock = RedisLock.new({'timeout' => 1000, 'name' => 'test-lock', 'value' => 'shared'}, [])
+        assert acquired_lock.acquire!
+
+        refute unacquired_lock.release!
+        assert_equal 'shared', redis('get', 'test-lock')
       end
 
       it "releases taken lock" do

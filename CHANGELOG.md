@@ -1,3 +1,16 @@
+## 0.8.0 (September 1, 2026)
+
+**NOTE:** Original author no longer uses this gem in production; changes are mostly: long-term maintenance, modern Sidekiq support and some edge cases handlers; if you noticed some breakage please do file an issue!
+
+- added support for Sidekiq 8 and Ruby 3.1-3.5
+- freeze all strings (performance)
+- dropped support for Ruby versions older than 3.1
+- clear the current lock before and after each middleware invocation, including when a worker raises
+- validate that lock names are not empty and lock timeouts are positive integers
+- prevent a lock instance that did not acquire a lock from releasing it
+- fixed lock release when Redis has flushed its script cache
+- updated inline testing guidance and corrected custom lock configuration examples
+
 ## 0.7.0 (Feb 7, 2024)
 
 - support for Sidekiq 7.2 (thanks for the issue report [9mm](https://github.com/9mm))

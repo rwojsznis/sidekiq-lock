@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sidekiq/lock/container'
 require 'sidekiq/lock/middleware'
 require 'sidekiq/lock/redis_lock'
