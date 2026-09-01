@@ -1,11 +1,12 @@
 <p align="center">
-  <img width="300" height="210" src="https://github.com/rwojsznis/sidekiq-lock/raw/main/logo.png">
+  <img width="600" height="200" alt="sidekiq-lock" src="https://github.com/user-attachments/assets/443421d3-f508-464d-a505-d2ca6f18e21b" />
 </p>
 
 # Sidekiq::Lock
 
-[![Code Climate](https://codeclimate.com/github/rwojsznis/sidekiq-lock.png)](https://codeclimate.com/github/rwojsznis/sidekiq-lock)
-[![Gem Version](https://badge.fury.io/rb/sidekiq-lock.png)](http://badge.fury.io/rb/sidekiq-lock)
+
+[![GitHub Release](https://img.shields.io/github/v/release/rwojsznis/sidekiq-lock)](https://github.com/rwojsznis/sidekiq-lock/releases/latest)
+[![CI](https://github.com/rwojsznis/sidekiq-lock/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/rwojsznis/sidekiq-lock/actions/workflows/test.yml?query=branch%3Amain)
 
 **Note:** This is a _complete_ piece of software, it should work across all future sidekiq & ruby versions.
 
